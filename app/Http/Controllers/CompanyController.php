@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class CompanyController extends Controller
 {
@@ -41,11 +43,16 @@ class CompanyController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function show($id)
     {
-        //
+        $company = Company::findOrFail($id);
+        if(auth()->user()->hasRole('user'))
+        {
+            return View::make('User.company', compact('company'));
+        }
+
     }
 
     /**

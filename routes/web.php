@@ -29,6 +29,15 @@ Route::group(['middleware' => ['auth:sanctum' , 'verified']], function(){
 
     Route::resource('Company', CompanyController::class);
     Route::resource('User', UserController::class);
+
+
+    Route::get('/clear-all-cache', function () {
+        Artisan::call('cache:clear');
+        \Illuminate\Support\Facades\Artisan::call('route:clear');
+        \Illuminate\Support\Facades\Artisan::call('view:clear');
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+        echo "Cleared all caches successfully.";
+    });
 });
 
 //Route::group(['middleware' => 'auth'], function(){
