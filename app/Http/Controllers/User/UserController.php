@@ -53,20 +53,21 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        if(auth()->user()->hasPermission('users-read'))
+        $a = auth()->user();
+        if($a->hasPermission('users-read'))
         {
             $user = User::findOrFail($id);
-            if(auth()->user()->hasRole('user'))
+            if($a->hasRole('user'))
             {
                 return View::make('User.show', compact('user'));
             }
-            if(auth()->user()->hasRole('administrator'))
+            if($a->hasRole('administrator'))
             {
                 return View::make('Admin.show', compact('user'));
             }
         }else
         {
-            Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
+            $this->SessionAlert();
             return View::make('welcome');
         }
 
@@ -84,7 +85,7 @@ class UserController extends Controller
         if($a->hasPermission('users-update'))
         {
             $employee = User::findOrFail($id);
-            if(auth()->user()->hasRole('user'))
+            if($a->hasRole('user'))
             {
                 return View::make('User.edit', compact('employee'));
             }
@@ -94,7 +95,7 @@ class UserController extends Controller
             }
         }else
         {
-            Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
+            $this->SessionAlert();
             return View::make('welcome');
         }
 
@@ -114,19 +115,19 @@ class UserController extends Controller
         {
             $employee = User::findOrFail($id);
             $this->storeEmployee($employee);
-            if(auth()->user()->hasRole('user'))
+            if($a->hasRole('user'))
             {
-                Session::flash('message', 'Your Date Successfully Updated.');
+                $this->SessionMessage();
                 return View::make('User.index');
             }
             if($a->hasRole('administrator'))
             {
-                Session::flash('message', 'Your Date Successfully Updated.');
+                $this->SessionMessage();
                 return View::make('Admin.index');
             }
         }else
         {
-            Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
+            $this->SessionAlert();
             return View::make('welcome');
         }
 
@@ -188,5 +189,15 @@ class UserController extends Controller
             $employee->company_name = request()->company_name;
         }
         $employee->save();
+    }
+
+    private function SessionMessage(): void
+    {
+        Session::flash('message', 'Your Date Successfully Updated.');
+    }
+
+    private function SessionAlert(): void
+    {
+        Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
     }
 }

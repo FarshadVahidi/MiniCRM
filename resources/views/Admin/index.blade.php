@@ -19,7 +19,7 @@
             {{ __('My Info') }}
         </x-jet-nav-link>
 
-        <x-jet-nav-link href="{{ route('User.index') }}">
+        <x-jet-nav-link href="{{ route('Company.index') }}">
             {{ __('Company List') }}
         </x-jet-nav-link>
 
