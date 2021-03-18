@@ -4,7 +4,15 @@
     {{ __('Company Detail:') }}
 @endsection
 
+
 @section('mainContent')
+    <div class="row">
+        @if(Session::has('message'))
+            <div class="alert alert-success" role="alert">
+                {{Session::get('message')}}
+            </div>
+        @endif
+    </div>
     <div class="row">
         <div class="col-md-12 offset-md-3">
             <table class="table table-striped">

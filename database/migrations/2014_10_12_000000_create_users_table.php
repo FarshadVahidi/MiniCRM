@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone');
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->foreignIdFor(\App\Models\Company::class)->nullable()->constrained()->onUpdate('cascade')->onDelete('restrict');
             $table->string('company_name')->nullable();
             $table->rememberToken();
