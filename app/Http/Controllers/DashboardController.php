@@ -14,6 +14,11 @@ class DashboardController extends Controller
         {
             return view('User.index');
         }
+
+        if(auth()->user()->hasRole('administrator'))
+        {
+            return view('Admin.index');
+        }
         else
         {
             Session::flash('danger', 'YOU DO NOT RIGHT TO HAVE ACCESS TO THIS SECTION.');

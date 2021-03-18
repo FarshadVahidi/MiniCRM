@@ -1,4 +1,5 @@
 <x-app-layout>
+
     @section('nav')
         <x-jet-nav-link href="{{ route('Company.index') }}">
             {{ __('Company') }}
