@@ -19,16 +19,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        $a = auth()->user();
-        if($a->hasPermission('users-read'))
+
+        if(User::authPermission('users-read'))
         {
             //        $employeeList = Employee::join('companies', 'company_id', '=', 'companies.id')->orderBy('employees.company_id', 'asc')->paginate(10);
             $employees = User::all();
-            if($a->hasRole('administrator'))
+            if(User::authRole('administrator'))
             {
                 return View::make('Admin.employeeIndex', compact('employees'));
             }
-            if($a->hasRole('user'))
+            if(User::authRole('user'))
             {
                 return View::make('User.index');
             }
@@ -47,11 +47,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        $a = auth()->user();
-        if($a->hasPermission('users-create'))
+        if(User::authPermission('users-create'))
         {
             $companies = Company::all();
-            if($a->hasRole('administrator'))
+            if(User::authRole('administrator'))
             {
                 return View::make('Admin.employeeCreate', compact('companies'));
             }
@@ -66,12 +65,11 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $a = auth()->user();
-        if($a->hasPermission('users-create'))
+        if(User::authPermission('users-create'))
         {
             $employee = new User();
             $this->storeEmployee($employee);
-            if($a->hasRole('administrator'))
+            if(User::authRole('administrator'))
             {
                 $this->SessionMessage();
                 return View::make('Admin.index');
@@ -87,15 +85,14 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $a = auth()->user();
-        if($a->hasPermission('users-read'))
+        if(User::authPermission('users-read'))
         {
             $user = User::findOrFail($id);
-            if($a->hasRole('user'))
+            if(User::authRole('user'))
             {
                 return View::make('User.show', compact('user'));
             }
-            if($a->hasRole('administrator'))
+            if(User::authRole('administrator'))
             {
                 return View::make('Admin.show', compact('user'));
             }
@@ -115,15 +112,14 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $a = auth()->user();
-        if($a->hasPermission('users-update'))
+        if(User::authPermission('users-update'))
         {
             $employee = User::findOrFail($id);
-            if($a->hasRole('user'))
+            if(User::authRole('user'))
             {
                 return View::make('User.edit', compact('employee'));
             }
-            if($a->hasRole('administrator'))
+            if(User::authRole('administrator'))
             {
                 $companies = Company::all();
                 return View::make('Admin.employeeEdit', compact('employee', 'companies'));
@@ -145,17 +141,16 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $a = auth()->user();
-        if($a->hasPermission('users-update'))
+        if(User::authPermission('users-update'))
         {
             $employee = User::findOrFail($id);
             $this->updateEmployee($employee);
-            if($a->hasRole('user'))
+            if(User::authRole('user'))
             {
                 $this->SessionMessage();
                 return View::make('User.index');
             }
-            if($a->hasRole('administrator'))
+            if(User::authRole('administrator'))
             {
                 $this->SessionMessage();
                 return View::make('Admin.index');
@@ -168,6 +163,7 @@ class UserController extends Controller
 
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
@@ -176,12 +172,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $a = auth()->user();
-        if($a->hasPermission('users-delete'))
+        if(User::authPermission('users-delete'))
         {
             $employee = User::findOrFail($id);
             $employee->delete();
-            if($a->hasRole('administrator'))
+            if(User::authRole('administrator'))
             {
                 $this->SessionMessage();
                 return View::make('Admin.index');

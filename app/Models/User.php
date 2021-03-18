@@ -60,4 +60,14 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public static function authPermission(string $str)
+    {
+        return auth()->user()->hasPermission($str);
+    }
+
+    public static function authRole(string $str)
+    {
+        return auth()->user()->hasRole($str);
+    }
 }
