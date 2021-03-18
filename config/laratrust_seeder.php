@@ -23,7 +23,7 @@ return [
             'profile' => 'r,u',
         ],
         'user' => [
-            'company' => 'r,u',
+            'company' => 'r',
             'profile' => 'r,u',
         ],
         'role_name' => [
