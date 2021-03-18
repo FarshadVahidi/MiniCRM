@@ -26,7 +26,7 @@
                     <td>{{$user->phone}}</td>
                     <td>{{$user->company_name}}</td>
                     <td>
-                        <a href="{{route('User.edit', $user)}}" class="btn btn-info">Show</a>
+                        <a href="{{route('User.edit', $user)}}" class="btn btn-info">Edit</a>
                     </td>
                 </tr>
                 </tbody>

@@ -9,4 +9,14 @@
             {{ __('My Info') }}
         </x-jet-nav-link>
     @endsection
+
+
+            @section('headerContent')
+            @if(Session::has('message'))
+                <div class="alert alert-success" role="alert">
+                {{Session::get('message')}}
+                </div>
+            @endif
+            @endsection
+
 </x-app-layout>
