@@ -27,6 +27,7 @@ Route::get('/', function () {
 Route::group(['middleware' => ['auth:sanctum' , 'verified']], function(){
     Route::get('/dashboard', [DashboardController::class, 'authUser'])->name('dashboard');
 
+
     Route::resource('Company', CompanyController::class);
     Route::resource('User', UserController::class);
 

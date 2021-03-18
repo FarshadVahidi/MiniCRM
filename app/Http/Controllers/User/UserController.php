@@ -53,11 +53,23 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        if(auth()->user()->hasRole('user'))
+        if(auth()->user()->hasPermission('users-read'))
         {
-            return View::make('User.show', compact('user'));
+            $user = User::findOrFail($id);
+            if(auth()->user()->hasRole('user'))
+            {
+                return View::make('User.show', compact('user'));
+            }
+            if(auth()->user()->hasRole('administrator'))
+            {
+                return View::make('Admin.show', compact('user'));
+            }
+        }else
+        {
+            Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
+            return View::make('welcome');
         }
+
     }
 
     /**
@@ -68,11 +80,24 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $employee = User::findOrFail($id);
-        if(auth()->user()->hasRole('user'))
+        $a = auth()->user();
+        if($a->hasPermission('users-update'))
         {
-            return View::make('User.edit', compact('employee'));
+            $employee = User::findOrFail($id);
+            if(auth()->user()->hasRole('user'))
+            {
+                return View::make('User.edit', compact('employee'));
+            }
+            if($a->hasRole('administrator'))
+            {
+                return View::make('Admin.edit', compact('employee'));
+            }
+        }else
+        {
+            Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
+            return View::make('welcome');
         }
+
     }
 
     /**
@@ -80,18 +105,31 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Contracts\View\View
      */
     public function update(Request $request, $id)
     {
-
-        $employee = User::findOrFail($id);
-        $this->storeEmployee($employee);
-        if(auth()->user()->hasRole('user'))
+        $a = auth()->user();
+        if($a->hasPermission('users-update'))
         {
-            Session::flash('message', 'Your Date Successfully Updated.');
-            return redirect()->route('User.index');
+            $employee = User::findOrFail($id);
+            $this->storeEmployee($employee);
+            if(auth()->user()->hasRole('user'))
+            {
+                Session::flash('message', 'Your Date Successfully Updated.');
+                return View::make('User.index');
+            }
+            if($a->hasRole('administrator'))
+            {
+                Session::flash('message', 'Your Date Successfully Updated.');
+                return View::make('Admin.index');
+            }
+        }else
+        {
+            Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
+            return View::make('welcome');
         }
+
     }
 
     /**

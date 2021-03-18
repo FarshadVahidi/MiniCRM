@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
 class CompanyController extends Controller
@@ -43,15 +44,25 @@ class CompanyController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\View\View
+     * @return string
      */
     public function show($id)
     {
-        $company = Company::findOrFail($id);
-        if(auth()->user()->hasRole('user'))
+        if(auth()->user()->hasPermission('company-read'))
         {
-            return View::make('User.company', compact('company'));
+            $company = Company::findOrFail($id);
+            if (auth()->user()->hasRole('user')) {
+                return View::make('User.company', compact('company'));
+            }
+            if (auth()->user()->hasRole('administrator'))
+            {
+                return View::make('Admin.company', compact('company'));
+            }
+        }else{
+            Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
+            return View::make('welcome');
         }
+
 
     }
 
