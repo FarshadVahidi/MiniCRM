@@ -88,7 +88,7 @@ class UserController extends Controller
         if(User::authPermission('users-read'))
         {
             $user = User::findOrFail($id);
-            if(User::authRole('user'))
+            if(User::authRole('user') && auth()->user()->id == $id)
             {
                 return View::make('User.show', compact('user'));
             }
@@ -96,6 +96,9 @@ class UserController extends Controller
             {
                 return View::make('Admin.show', compact('user'));
             }
+            $this->SessionAlert();
+            return View::make('welcome');
+
         }else
         {
             $this->SessionAlert();
@@ -234,6 +237,7 @@ class UserController extends Controller
             $employee->password = Hash::make(request()->password);
         }
         $employee->save();
+        $employee->attachRole(request()->role);
     }
 
     private function validateUpdate()

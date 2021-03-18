@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewCompanyHasRegistered;
 use App\Models\Company;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -18,11 +19,10 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $a = auth()->user();
-        if($a->hasPermission('company-read'))
+        if(User::authPermission('company-read'))
         {
             $companies = Company::all();
-            if($a->hasRole('administrator'))
+            if(User::authRole('administrator'))
             {
                 return View::make('Admin.companyShow', compact('companies'));
             }
@@ -41,10 +41,9 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        $a = auth()->user();
-        if($a->hasPermission('company-create'))
+        if(User::authPermission('company-create'))
         {
-            if($a->hasRole('administrator'))
+            if(User::authRole('administrator'))
             {
                 return View::make('Admin.companyCreate');
             }
@@ -63,8 +62,7 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        $a = auth()->user();
-        if($a->hasPermission('company-create'))
+        if(User::authPermission('company-create'))
         {
             $co = new Company();
             $company = $this->storeCompany($co);
@@ -85,17 +83,18 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        $a = auth()->user();
-        if($a->hasPermission('company-read'))
+        if(User::authPermission('company-read'))
         {
             $company = Company::findOrFail($id);
-            if ($a->hasRole('user')) {
+            if (User::authRole('user') && auth()->user()->company_id == $id) {
                 return View::make('User.company', compact('company'));
             }
-            if ($a->hasRole('administrator'))
+            if (User::authRole('administrator'))
             {
                 return View::make('Admin.company', compact('company'));
             }
+            Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
+            return View::make('welcome');
         }else{
             Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
             return View::make('welcome');
@@ -112,11 +111,10 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        $a = auth()->user();
-        if($a->hasPermission('company-update'))
+        if(User::authPermission('company-update'))
         {
             $company = Company::findOrFail($id);
-            if($a->hasRole('administrator')){
+            if(User::authRole('administrator')){
                 return View::make('Admin.companyEdit', compact('company'));
             }
         }else
@@ -135,12 +133,11 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $a = auth()->user();
-        if($a->hasPermission('company-update'))
+        if(User::authPermission('company-update'))
         {
             $company = Company::findOrFail($id);
             $this->storeCompany($company);
-            if($a->hasRole('administrator'))
+            if(User::authRole('administrator'))
             {
                 Session::flash('message', 'Company Update Successfully.');
                 return Redirect::to('Company/'.$company->id);

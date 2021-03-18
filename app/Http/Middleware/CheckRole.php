@@ -17,7 +17,6 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, string $role)
     {
-        dd('frahs');
         if($role == 'user' && auth()->user()->hasRole('user')){
             abort(403);
         }

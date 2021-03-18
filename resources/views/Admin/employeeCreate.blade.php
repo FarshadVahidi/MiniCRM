@@ -56,6 +56,10 @@
                     </select>
                 </div>
 
+                <div class="mb-3">
+                    <input type="text" name="role" value="user" hidden>
+                </div>
+
                 @csrf
                 <button type="submit" class="btn btn-primary">Add Employee</button>
             </form>

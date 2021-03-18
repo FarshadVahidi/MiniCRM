@@ -24,6 +24,7 @@ return [
         ],
         'user' => [
             'company' => 'r',
+            'users' => 'r',
             'profile' => 'r,u',
         ],
         'role_name' => [
