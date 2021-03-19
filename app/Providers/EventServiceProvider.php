@@ -22,7 +22,7 @@ class EventServiceProvider extends ServiceProvider
         NewCompanyHasRegistered::class => [
             WelcomeNewCompanyListener::class,
             //these tow Listener i think must implement
-            // use php artisan generati command to make these two automatic
+            // use php artisan generate command to make these two automatic
             RegisterCompanyToNewsLetter::class, //add company email to our news letter
             NotifyAdminViaSlack::class, // notify to super administrator when new company add to system
         ],

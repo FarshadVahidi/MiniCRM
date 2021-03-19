@@ -28,6 +28,6 @@ class WelcomeNewCompanyMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.new-welcom');
+        return $this->markdown('emails.new-welcome');
     }
 }
