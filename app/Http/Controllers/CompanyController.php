@@ -26,6 +26,10 @@ class CompanyController extends Controller
             {
                 return View::make('Admin.companyShow', compact('companies'));
             }
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.companyIndex', compact('companies'));
+            }
         }else
         {
             Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
