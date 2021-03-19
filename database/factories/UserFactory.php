@@ -2,9 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Types\Integer;
 
 class UserFactory extends Factory
 {
@@ -22,11 +24,18 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+
+        $company = Company::all()->random(1)->first();
         return [
             'name' => $this->faker->name,
+            'lastName' => $this->faker->lastName,
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'phone' => $this->faker->phoneNumber,
+            'photo' => $this->faker->image('public/storage/uploads', 300, 300, null, null),
+            'company_id' => $company->id,
+            'company_name' => $company->name,
             'remember_token' => Str::random(10),
         ];
     }

@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\NewCompanyHasRegistered;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use App\Listeners\WelcomeNewCompanyListener;
+use App\Listeners\RegisterCompanyToNewsLetter;
+use App\Listeners\NotifyAdminViaSlack;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -15,8 +19,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        NewCompanyHasRegistered::class => [
+            WelcomeNewCompanyListener::class,
+            //these tow Listener i think must implement
+            // use php artisan generate command to make these two automatic
+            RegisterCompanyToNewsLetter::class, //add company email to our news letter
+            NotifyAdminViaSlack::class, // notify to super administrator when new company add to system
         ],
     ];
 
