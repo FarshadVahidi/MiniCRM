@@ -4,6 +4,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\ContactFormController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ Route::group(['middleware' => ['auth:sanctum' , 'verified']], function(){
 
     Route::resource('Company', CompanyController::class);
     Route::resource('User', UserController::class);
+    Route::resource('Contact', ContactFormController::class);
 
 
     Route::get('/clear-all-cache', function () {

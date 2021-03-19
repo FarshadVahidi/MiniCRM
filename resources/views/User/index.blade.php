@@ -8,6 +8,10 @@
         <x-jet-nav-link href="{{ route('User.show', auth()->user()->id) }}">
             {{ __('My Info') }}
         </x-jet-nav-link>
+
+        <x-jet-nav-link href="{{ route('Contact.create') }}">
+            {{ __('Contact Us') }}
+        </x-jet-nav-link>
     @endsection
 
 

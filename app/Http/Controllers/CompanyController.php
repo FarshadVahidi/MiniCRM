@@ -66,7 +66,7 @@ class CompanyController extends Controller
         {
             $co = new Company();
             $company = $this->storeCompany($co);
-            $company->save();
+            event(new NewCompanyHasRegistered($company));
             return View::make('Admin.company', compact('company'));
         }else
         {
