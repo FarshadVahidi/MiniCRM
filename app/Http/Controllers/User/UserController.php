@@ -4,8 +4,10 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
@@ -24,6 +26,10 @@ class UserController extends Controller
         {
             //        $employeeList = Employee::join('companies', 'company_id', '=', 'companies.id')->orderBy('employees.company_id', 'asc')->paginate(10);
             $employees = User::all();
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.employeeIndex', compact('employees'));
+            }
             if(User::authRole('administrator'))
             {
                 return View::make('Admin.employeeIndex', compact('employees'));
@@ -47,12 +53,20 @@ class UserController extends Controller
      */
     public function create()
     {
-        if(User::authPermission('users-create'))
-        {
+        if (User::authPermission('users-create')) {
             $companies = Company::all();
-            if(User::authRole('administrator'))
-            {
+            if (User::authRole('administrator')) {
                 return View::make('Admin.employeeCreate', compact('companies'));
+            }
+            if (User::authRole('superadministrator')) {
+                return View::make('Super.employeeCreate', compact('companies'));
+            }
+        }
+        else
+        {
+            {
+                $this->SessionAlert();
+                return View::make('welcome');
             }
         }
     }
@@ -73,6 +87,11 @@ class UserController extends Controller
             {
                 $this->SessionMessage();
                 return View::make('Admin.index');
+            }
+            if(User::authRole('superadministrator'))
+            {
+                $this->SessionMessage();
+                return View::make('Super.index');
             }
         }
     }
@@ -96,6 +115,10 @@ class UserController extends Controller
             {
                 return View::make('Admin.show', compact('user'));
             }
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.employeeShow', compact('user'));
+            }
             $this->SessionAlert();
             return View::make('welcome');
 
@@ -118,14 +141,23 @@ class UserController extends Controller
         if(User::authPermission('users-update'))
         {
             $employee = User::findOrFail($id);
+            $companies = Company::all();
+            $roles = Role::all();
             if(User::authRole('user'))
             {
                 return View::make('User.edit', compact('employee'));
             }
             if(User::authRole('administrator'))
             {
-                $companies = Company::all();
                 return View::make('Admin.employeeEdit', compact('employee', 'companies'));
+            }
+            if(User::authRole('superadministrator'))
+            {
+                $role = DB::table('role_user')
+                    ->select('role_id')
+                    ->where('user_id', '=', $id)
+                    ->get();
+                return View::make('Super.employeeEdit', compact('employee', 'companies', 'roles', 'role'));
             }
         }else
         {
@@ -148,6 +180,7 @@ class UserController extends Controller
         {
             $employee = User::findOrFail($id);
             $this->updateEmployee($employee);
+            $user = $employee; //mistake on naming need refactoring
             if(User::authRole('user'))
             {
                 $this->SessionMessage();
@@ -157,6 +190,11 @@ class UserController extends Controller
             {
                 $this->SessionMessage();
                 return View::make('Admin.index');
+            }
+            if(User::authRole('superadministrator'))
+            {
+                $this->SessionMessage();
+                return View::make('Super.employeeShow', compact('user'));
             }
         }else
         {
@@ -183,6 +221,11 @@ class UserController extends Controller
             {
                 $this->SessionMessage();
                 return View::make('Admin.index');
+            }
+            if(User::authRole('superadministrator'))
+            {
+                Session::flash('alert', 'Employee DELETED successfully.');
+                return View::make('Super.index');
             }
         }
 
@@ -260,6 +303,7 @@ class UserController extends Controller
 
     private function updateEmployee($employee)
     {
+        DB::delete('delete from role_user where user_id = ?', [$employee->id]);
         $this->validateUpdate();
         $company = Company::findOrFail(request()->company_id);
         if (request()->has('photo')) {
@@ -284,6 +328,7 @@ class UserController extends Controller
             $employee->company_name = $company->name;
         }
         $employee->save();
+        $employee->attachRole(request()->role);
     }
 
     private function SessionMessage(): void

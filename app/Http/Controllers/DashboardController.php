@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
@@ -18,6 +19,11 @@ class DashboardController extends Controller
         if(auth()->user()->hasRole('administrator'))
         {
             return view('Admin.index');
+        }
+
+        if(User::authRole('superadministrator'))
+        {
+            return View::make('Super.index');
         }
         else
         {

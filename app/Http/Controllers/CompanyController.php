@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
+use mysql_xdevapi\Exception;
 
 class CompanyController extends Controller
 {
@@ -25,6 +26,10 @@ class CompanyController extends Controller
             if(User::authRole('administrator'))
             {
                 return View::make('Admin.companyShow', compact('companies'));
+            }
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.companyIndex', compact('companies'));
             }
         }else
         {
@@ -47,6 +52,10 @@ class CompanyController extends Controller
             {
                 return View::make('Admin.companyCreate');
             }
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.companyCreate');
+            }
         }else
         {
             Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
@@ -67,7 +76,16 @@ class CompanyController extends Controller
             $co = new Company();
             $company = $this->storeCompany($co);
             event(new NewCompanyHasRegistered($company));
-            return View::make('Admin.company', compact('company'));
+            if(User::authRole('administrator'))
+            {
+                return View::make('Admin.company', compact('company'));
+            }
+            if(User::authRole('superadministrator'))
+            {
+                Session::flash('message', 'Company Added successfully.');
+                return View::make('Super.companyShow', compact('company'));
+            }
+
         }else
         {
             Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
@@ -93,6 +111,10 @@ class CompanyController extends Controller
             {
                 return View::make('Admin.company', compact('company'));
             }
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.companyShow', compact('company'));
+            }
             Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
             return View::make('welcome');
         }else{
@@ -117,6 +139,10 @@ class CompanyController extends Controller
             if(User::authRole('administrator')){
                 return View::make('Admin.companyEdit', compact('company'));
             }
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.companyEdit', compact('company'));
+            }
         }else
         {
             Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
@@ -129,7 +155,7 @@ class CompanyController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Contracts\View\View
      */
     public function update(Request $request, $id)
     {
@@ -142,6 +168,16 @@ class CompanyController extends Controller
                 Session::flash('message', 'Company Update Successfully.');
                 return Redirect::to('Company/'.$company->id);
             }
+            if(User::authRole('superadministrator'))
+            {
+                Session::flash('message', 'Company Update Successfully.');
+                return View::make('Super.companyShow', compact('company'));
+            }
+        }
+        else
+        {
+            Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
+            return View::make('welcome');
         }
     }
 
@@ -149,11 +185,33 @@ class CompanyController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function destroy($id)
     {
-        //
+        if(User::authPermission('company-delete'))
+        {
+            $company = Company::findOrFail($id);
+
+            try{
+                $company->delete();
+            }catch (\Exception $e)
+            {
+                Session::flash('alert', 'You CAN NOT DELETE this COMPANY!, STILL EMPLOYEE REGISTERED for this comapny');
+                return View::make('Super.index');
+            }
+
+            Session::flash('message', 'Company Successfully DELETED.');
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.index');
+            }
+        }
+        else
+        {
+            Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
+            return View::make('welcome');
+        }
     }
 
     private function validateRequest()
