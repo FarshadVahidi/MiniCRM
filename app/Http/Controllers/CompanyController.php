@@ -110,6 +110,10 @@ class CompanyController extends Controller
             {
                 return View::make('Admin.company', compact('company'));
             }
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.companyShow', compact('company'));
+            }
             Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
             return View::make('welcome');
         }else{
