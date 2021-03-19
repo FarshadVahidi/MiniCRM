@@ -34,12 +34,26 @@
                 </div>
 
                 <div class="mb-3">
-                    <select class="mdb-select" name="company_id">
+                    <select class="form-text block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" name="company_id">
                         <option value="{{ old('company_id') ?? $employee->company_id }}" selected>{{ $employee->company_name }}</option>
                         @foreach($companies as $company)
                             <option value="{{$company->id}}">{{$company->name}}</option>
                         @endforeach
                     </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone">Role List</label>
+                    <select
+                        class="form-text block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+                        name="role" required="required">
+                        <option value="{{ old('role')}}">Select Role</option>
+                        <option value="user">User</option>
+                        <option value="administrator">Administrator</option>
+                        <option value="superadministrator">Super Administrator</option>
+
+                    </select>
+                    {{ $errors->first('role') }}
                 </div>
 
                 <div class="form-group d-flex flex-column">

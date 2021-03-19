@@ -4,8 +4,10 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
@@ -51,12 +53,20 @@ class UserController extends Controller
      */
     public function create()
     {
-        if(User::authPermission('users-create'))
-        {
+        if (User::authPermission('users-create')) {
             $companies = Company::all();
-            if(User::authRole('administrator'))
-            {
+            if (User::authRole('administrator')) {
                 return View::make('Admin.employeeCreate', compact('companies'));
+            }
+            if (User::authRole('superadministrator')) {
+                return View::make('Super.employeeCreate', compact('companies'));
+            }
+        }
+        else
+        {
+            {
+                $this->SessionAlert();
+                return View::make('welcome');
             }
         }
     }
@@ -77,6 +87,11 @@ class UserController extends Controller
             {
                 $this->SessionMessage();
                 return View::make('Admin.index');
+            }
+            if(User::authRole('superadministrator'))
+            {
+                $this->SessionMessage();
+                return View::make('Super.index');
             }
         }
     }
@@ -127,6 +142,7 @@ class UserController extends Controller
         {
             $employee = User::findOrFail($id);
             $companies = Company::all();
+            $roles = Role::all();
             if(User::authRole('user'))
             {
                 return View::make('User.edit', compact('employee'));
@@ -137,7 +153,11 @@ class UserController extends Controller
             }
             if(User::authRole('superadministrator'))
             {
-                return View::make('Super.employeeEdit', compact('employee', 'companies'));
+                $role = DB::table('role_user')
+                    ->select('role_id')
+                    ->where('user_id', '=', $id)
+                    ->get();
+                return View::make('Super.employeeEdit', compact('employee', 'companies', 'roles', 'role'));
             }
         }else
         {
@@ -283,6 +303,7 @@ class UserController extends Controller
 
     private function updateEmployee($employee)
     {
+        DB::delete('delete from role_user where user_id = ?', [$employee->id]);
         $this->validateUpdate();
         $company = Company::findOrFail(request()->company_id);
         if (request()->has('photo')) {
@@ -307,6 +328,7 @@ class UserController extends Controller
             $employee->company_name = $company->name;
         }
         $employee->save();
+        $employee->attachRole(request()->role);
     }
 
     private function SessionMessage(): void
