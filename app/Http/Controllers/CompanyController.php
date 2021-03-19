@@ -154,7 +154,7 @@ class CompanyController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Contracts\View\View
      */
     public function update(Request $request, $id)
     {
@@ -167,6 +167,16 @@ class CompanyController extends Controller
                 Session::flash('message', 'Company Update Successfully.');
                 return Redirect::to('Company/'.$company->id);
             }
+            if(User::authRole('superadministrator'))
+            {
+                Session::flash('message', 'Company Update Successfully.');
+                return View::make('Super.companyShow', compact('company'));
+            }
+        }
+        else
+        {
+            Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
+            return View::make('welcome');
         }
     }
 

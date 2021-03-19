@@ -1,13 +1,14 @@
 @extends('layouts.adminLte')
 
 @section('mainContent')
-
-    <div class="d-flex justify-content-between">
-        @if(Session::has('message'))
-            <div class="alert alert-success" role="alert">
-                {{Session::get('message')}}
-            </div>
-        @endif
+    <div class="card-header border-0">
+        <div class="d-flex justify-content-between">
+            @if(Session::has('message'))
+                <div class="alert alert-success" role="alert">
+                    {{Session::get('message')}}
+                </div>
+            @endif
+        </div>
     </div>
 
     <div class="card-body">
@@ -18,6 +19,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Website</th>
+                    <th scope="col">edit</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -25,6 +27,7 @@
                     <td>{{$company->name}}</td>
                     <td>{{$company->email}}</td>
                     <td>{{$company->website}}</td>
+                    <td><a href="{{ route('Company.edit', $company->id) }}" class="btn btn-success">Edit</a></td>
                 </tr>
                 </tbody>
             </table>

@@ -30,7 +30,7 @@
                     <td>{{$company->website}}</td>
                     <td><a href="{{ route('Company.show', $company->id) }}" class="btn btn-info">Show</a></td>
                     <td><a href="{{ route('Company.edit', $company->id) }}" class="btn btn-success">Edit</a></td>
-                    <td><a href="{{ route('Company.destroy', $company->id) }}" class="btn btn-danger">Edit</a></td>
+                    <td><a href="{{ route('Company.destroy', $company->id) }}" class="btn btn-danger">Delete</a></td>
                 </tr>
             @endforeach
             </tbody>
