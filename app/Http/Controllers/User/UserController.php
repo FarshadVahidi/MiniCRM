@@ -24,6 +24,10 @@ class UserController extends Controller
         {
             //        $employeeList = Employee::join('companies', 'company_id', '=', 'companies.id')->orderBy('employees.company_id', 'asc')->paginate(10);
             $employees = User::all();
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.employeeIndex', compact('employees'));
+            }
             if(User::authRole('administrator'))
             {
                 return View::make('Admin.employeeIndex', compact('employees'));
@@ -96,6 +100,10 @@ class UserController extends Controller
             {
                 return View::make('Admin.show', compact('user'));
             }
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.employeeShow', compact('user'));
+            }
             $this->SessionAlert();
             return View::make('welcome');
 
@@ -118,14 +126,18 @@ class UserController extends Controller
         if(User::authPermission('users-update'))
         {
             $employee = User::findOrFail($id);
+            $companies = Company::all();
             if(User::authRole('user'))
             {
                 return View::make('User.edit', compact('employee'));
             }
             if(User::authRole('administrator'))
             {
-                $companies = Company::all();
                 return View::make('Admin.employeeEdit', compact('employee', 'companies'));
+            }
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.employeeEdit', compact('employee', 'companies'));
             }
         }else
         {
@@ -157,6 +169,11 @@ class UserController extends Controller
             {
                 $this->SessionMessage();
                 return View::make('Admin.index');
+            }
+            if(User::authRole('superadministrator'))
+            {
+                $this->SessionMessage();
+                return View::make('Super.employeeShow', compact('employee'));
             }
         }else
         {
