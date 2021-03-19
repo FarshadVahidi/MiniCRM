@@ -30,7 +30,13 @@
                     <td>{{$company->website}}</td>
                     <td><a href="{{ route('Company.show', $company->id) }}" class="btn btn-info">Show</a></td>
                     <td><a href="{{ route('Company.edit', $company->id) }}" class="btn btn-success">Edit</a></td>
-                    <td><a href="{{ route('Company.destroy', $company->id) }}" class="btn btn-danger">Delete</a></td>
+                    <td>
+                        <form method="POST" action="{{ route('Company.destroy', $company->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
             </tbody>

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
+use mysql_xdevapi\Exception;
 
 class CompanyController extends Controller
 {
@@ -184,11 +185,33 @@ class CompanyController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function destroy($id)
     {
-        //
+        if(User::authPermission('company-delete'))
+        {
+            $company = Company::findOrFail($id);
+
+            try{
+                $company->delete();
+            }catch (\Exception $e)
+            {
+                Session::flash('alert', 'You CAN NOT DELETE this COMPANY!, STILL EMPLOYEE REGISTERED for this comapny');
+                return View::make('Super.index');
+            }
+
+            Session::flash('message', 'Company Successfully DELETED.');
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.index');
+            }
+        }
+        else
+        {
+            Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
+            return View::make('welcome');
+        }
     }
 
     private function validateRequest()
