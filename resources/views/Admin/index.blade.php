@@ -24,7 +24,7 @@
         </x-jet-nav-link>
 
         <x-jet-nav-link href="{{ route('User.index') }}">
-            {{ __('Employee List') }}
+            {{ __('User List') }}
         </x-jet-nav-link>
     @endsection
 

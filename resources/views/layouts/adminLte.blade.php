@@ -54,7 +54,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="/dashboard" class="nav-link">Home</a>
+                <a href="/dashboard" class="nav-link">{{ __('Home') }}</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
                 <form method="POST" action="{{ route('logout') }}">
@@ -188,7 +188,7 @@
         <a href="/dashboard" class="brand-link">
             <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
                  class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">AdminLTE 3</span>
+            <span class="brand-text font-weight-light">{{ __('AdminLTE 3') }}</span>
         </a>
 
         <!-- Sidebar -->
@@ -227,7 +227,7 @@
                         <a href="#" class="nav-link active">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
-                                Dashboard
+                                {{ __('Dashboard') }}
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -235,13 +235,13 @@
                             <li class="nav-item">
                                 <a href="{{ route('Company.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Companies</p>
+                                    <p>{{ __('Companies') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('User.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Employees</p>
+                                    <p>{{ __('Employees') }}</p>
                                 </a>
                             </li>
                             {{--                            <li class="nav-item">--}}
@@ -419,7 +419,7 @@
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-edit"></i>
                             <p>
-                                Forms
+                                {{ __('Forms') }}
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -427,13 +427,13 @@
                             <li class="nav-item">
                                 <a href="{{ route('Company.create') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Add New Company</p>
+                                    <p>{{ __('Add New Company') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('User.create') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Add New Employee</p>
+                                    <p>{{ __('Add New Employee') }}</p>
                                 </a>
                             </li>
                             {{--                            <li class="nav-item">--}}
@@ -454,7 +454,7 @@
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-table"></i>
                             <p>
-                                Tables
+                                {{ __('Tables') }}
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -462,13 +462,13 @@
                             <li class="nav-item">
                                 <a href="{{ route('Company.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Company List</p>
+                                    <p>{{ __('Company List') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('User.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Employee List</p>
+                                    <p>{{ __('Employee List') }}</p>
                                 </a>
                             </li>
                             {{--                            <li class="nav-item">--}}
@@ -479,7 +479,7 @@
                             {{--                            </li>--}}
                         </ul>
                     </li>
-                    <li class="nav-header">EXAMPLES</li>
+                    <li class="nav-header">{{ __('EXAMPLES') }}</li>
                     {{--                    <li class="nav-item">--}}
                     {{--                        <a href="pages/calendar.html" class="nav-link">--}}
                     {{--                            <i class="nav-icon fas fa-calendar-alt"></i>--}}
@@ -509,27 +509,27 @@
                         <a href="#" class="nav-link">
                             <i class="nav-icon far fa-envelope"></i>
                             <p>
-                                Mailbox
+                                {{ __('Mailbox') }}
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="pages/mailbox/mailbox.html" class="nav-link">
+                                <a href="{{ asset('pages/mailbox/mailbox.html') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Inbox</p>
+                                    <p>{{ __('Inbox') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/mailbox/compose.html" class="nav-link">
+                                <a href="{{ asset('pages/mailbox/compose.html') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Compose</p>
+                                    <p>{{ __('Compose') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/mailbox/read-mail.html" class="nav-link">
+                                <a href="{{ asset('pages/mailbox/read-mail.html') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Read</p>
+                                    <p>{{ __('Read') }}</p>
                                 </a>
                             </li>
                         </ul>

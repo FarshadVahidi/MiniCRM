@@ -16,10 +16,10 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Website</th>
-                    <th scope="col">edit</th>
+                    <th scope="col">{{ __('Name') }}</th>
+                    <th scope="col">{{ __('Email') }}</th>
+                    <th scope="col">{{ __('Website') }}</th>
+                    <th scope="col">{{ __('Action') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -27,7 +27,7 @@
                     <td>{{$company->name}}</td>
                     <td>{{$company->email}}</td>
                     <td>{{$company->website}}</td>
-                    <td><a href="{{ route('Company.edit', $company->id) }}" class="btn btn-success">Edit</a></td>
+                    <td><a href="{{ route('Company.edit', $company->id) }}" class="btn btn-success">{{ __('Edit') }}</a></td>
                 </tr>
                 </tbody>
             </table>
