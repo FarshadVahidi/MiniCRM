@@ -160,6 +160,7 @@ class UserController extends Controller
         {
             $employee = User::findOrFail($id);
             $this->updateEmployee($employee);
+            $user = $employee; //mistake on naming need refactoring
             if(User::authRole('user'))
             {
                 $this->SessionMessage();
@@ -173,7 +174,7 @@ class UserController extends Controller
             if(User::authRole('superadministrator'))
             {
                 $this->SessionMessage();
-                return View::make('Super.employeeShow', compact('employee'));
+                return View::make('Super.employeeShow', compact('user'));
             }
         }else
         {
@@ -200,6 +201,11 @@ class UserController extends Controller
             {
                 $this->SessionMessage();
                 return View::make('Admin.index');
+            }
+            if(User::authRole('superadministrator'))
+            {
+                Session::flash('alert', 'Employee DELETED successfully.');
+                return View::make('Super.index');
             }
         }
 

@@ -23,16 +23,16 @@
             </thead>
             <tbody>
             <tr>
-                <td>{{$employee->name}}</td>
-                <td>{{$employee->lastName}}</td>
-                <td>{{$employee->email}}</td>
-                <td>{{$employee->phone}}</td>
-                <td>{{$employee->company_name}}</td>
+                <td>{{$user->name}}</td>
+                <td>{{$user->lastName}}</td>
+                <td>{{$user->email}}</td>
+                <td>{{$user->phone}}</td>
+                <td>{{$user->company_name}}</td>
                 <td>
-                    <a href="{{route('User.edit', $employee->id)}}" class="btn btn-success">Edit</a>
+                    <a href="{{route('User.edit', $user->id)}}" class="btn btn-success">Edit</a>
                 </td>
                 <td>
-                    <form method="POST" action="{{ route('User.destroy', $employee->id) }}">
+                    <form method="POST" action="{{ route('User.destroy', $user->id) }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit" onclick="return confirm('Are You Sure? you want to DELETE this user')"
@@ -44,9 +44,9 @@
             </tbody>
         </table>
 
-        @if($employee->photo)
+        @if($user->photo)
             <div>
-                <img src="{{asset('storage/uploads/' . $employee->photo)}}" class="img-thumbnail" alt="">
+                <img src="{{asset('storage/uploads/' . $user->photo)}}" class="img-thumbnail" alt="">
             </div>
         @endif
     </div>
