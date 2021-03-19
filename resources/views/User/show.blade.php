@@ -14,7 +14,7 @@
                     <th scope="col">{{ __('Last Name') }}</th>
                     <th scope="col">{{ __('Email') }}</th>
                     <th scope="col">{{ __('Phone Number') }}</th>
-                    <th scope="col">{{ __('Company Work For') }}</th>
+                    <th scope="col">{{ __('Work For') }}</th>
                     <th scope="col">{{ __('Action') }}</th>
                 </tr>
                 </thead>
