@@ -51,6 +51,10 @@ class CompanyController extends Controller
             {
                 return View::make('Admin.companyCreate');
             }
+            if(User::authRole('superadministrator'))
+            {
+                return View::make('Super.companyCreate');
+            }
         }else
         {
             Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
@@ -71,7 +75,16 @@ class CompanyController extends Controller
             $co = new Company();
             $company = $this->storeCompany($co);
             event(new NewCompanyHasRegistered($company));
-            return View::make('Admin.company', compact('company'));
+            if(User::authRole('administrator'))
+            {
+                return View::make('Admin.company', compact('company'));
+            }
+            if(User::authRole('superadministrator'))
+            {
+                Session::flash('message', 'Company Added successfully.');
+                return View::make('Super.companyShow', compact('company'));
+            }
+
         }else
         {
             Session::flash('alert', 'YOU DONT HAVE RIGHT TO ACCESS TO THIS INFORMATION.');
