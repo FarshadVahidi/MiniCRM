@@ -10,30 +10,30 @@
             <form method="post" action="{{route('User.update', $employee->id)}}" enctype="multipart/form-data">
                 @method('PATCH')
                 <div class="form-group mb-3">
-                    <label for="firstName" class="form-label">FIRST Name</label>
+                    <label for="firstName" class="form-label">{{ __('First Name') }}</label>
                     <input type="text" name="name" class="form-control" required="required" value="{{ old('name') ?? $employee->name}}">
                     <div>{{ $errors->first('name') }}</div>
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="lastName" class="form-label">FIRST Name</label>
+                    <label for="lastName" class="form-label">{{__('Last Name')}}</label>
                     <input type="text" name="lastName" class="form-control" required="required" value="{{ old('lastName') ?? $employee->lastName}}">
                     <div>{{ $errors->first('lastName') }}</div>
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="email" class="form-label">EMAIL</label>
+                    <label for="email" class="form-label">{{__('Email')}}</label>
                     <input type="text" name="email" class="form-control" required="required" value="{{ old('email') ?? $employee->email}}">
                     <div>{{ $errors->first('email') }}</div>
                 </div>
 
                 <div class=" form-group mb-3">
-                    <label for="website" class="form-label">PHONE</label>
+                    <label for="website" class="form-label">{{__('Phone')}}</label>
                     <input type="text" name="phone" class="form-control" required="required" value="{{ old('phone') ?? $employee->phone}}">
                 </div>
 
                 <div class="form-group d-flex flex-column">
-                    <label for="photo" class="py-2">IMAGE</label>
+                    <label for="photo" class="py-2">{{__('Photo')}}</label>
                     <input type="file" name="photo" class="py-2" value="{{ old('photo') ?? $employee->photo }}">
                     <div>{{ $errors->first('photo') }}</div>
                 </div>
@@ -47,7 +47,7 @@
                 </div>
 
                 @csrf
-                <button type="submit" class="btn btn-primary">Update My Info</button>
+                <button type="submit" class="btn btn-primary">{{__('Update My Profile')}}</button>
             </form>
         </div>
     </div>

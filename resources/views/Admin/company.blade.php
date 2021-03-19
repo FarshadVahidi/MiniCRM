@@ -18,9 +18,9 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Website</th>
+                    <th scope="col">{{__('Name')}}</th>
+                    <th scope="col">{{__('Email')}}</th>
+                    <th scope="col">{{__('Website')}}</th>
                 </tr>
                 </thead>
                 <tbody>

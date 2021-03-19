@@ -10,12 +10,12 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone Number</th>
-                    <th scope="col">Company Work For</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">{{ __('First Name') }}</th>
+                    <th scope="col">{{ __('Last Name') }}</th>
+                    <th scope="col">{{ __('Email') }}</th>
+                    <th scope="col">{{ __('Phone Number') }}</th>
+                    <th scope="col">{{ __('Company Work For') }}</th>
+                    <th scope="col">{{ __('Action') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,7 +26,7 @@
                     <td>{{$user->phone}}</td>
                     <td>{{$user->company_name}}</td>
                     <td>
-                        <a href="{{route('User.edit', $user)}}" class="btn btn-info">Edit</a>
+                        <a href="{{route('User.edit', $user)}}" class="btn btn-info">{{ __('Edit') }}</a>
                     </td>
                 </tr>
                 </tbody>
